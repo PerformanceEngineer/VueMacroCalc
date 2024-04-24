@@ -17,7 +17,7 @@
 
   --vt-c-text-light-1: var(--vt-c-indigo);
   --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
+  --vt-c-text-dark-1: var(--vt-c-black);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 }
 
@@ -30,8 +30,8 @@
   --color-border: var(--vt-c-divider-light-2);
   --color-border-hover: var(--vt-c-divider-light-1);
 
-  --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
+  --color-heading: var(--vt-c-text-dark-1);
+  --color-text: var(--vt-c-text-dark-1);
 
   --section-gap: 160px;
 }
@@ -83,4 +83,101 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+centerdiv > * {
+  display: flex;
+  justify-content: center;
+}
+
+/* .arrange-horizontally > * {
+  display: inline-block;
+  text-align: center;
+}
+.arrange-vertically > * {
+  display: block;
+} */
+
+.arrange-horizontally {
+  display: flex;
+  justify-content: center; /* Horizontally center the items */
+}
+
+.arrange-vertically {
+  display: flex;
+  flex-direction: column; /* Arrange items vertically within each div */
+  align-items: center; /* Center items horizontally within each div */
+}
+
+.arrange-horizontally > * {
+  margin: 0 10px; /* Optional: Add margin between the items */
+}
+
+h1 {
+  text-align: center;
+}
+h2 {
+  text-align: center;
+  color: black;
+}
+.formDiv {
+  border: 5px outset black;
+  background-color: #ec0015;
+  color: white;
+  text-align: center;
+  padding-top: 50px;
+}
+body {
+  background-color: #ffffff;
+}
+
+.button {
+  background-color: #ec0015;
+  border: solid;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  width: 340px;
+}
+
+.button:hover {
+  background-color: transparent;
+  color: #ec0015;
+}
+
+.MyLogoDiv {
+  background-color: white;
+  text-align: center;
+}
+.textDiv {
+  border: 5px outset black;
+  background-color: #f9e4e4;
+  color: black;
+  text-align: center;
+}
+#responsive-image {
+  width: 100%;
+  height: auto;
+}
+.hugeInput {
+  font-size: 112px;
+  line-height: 136px;
+  text-align: center;
+  width: 540px;
+}
+label {
+  color: white;
+}
+.flex-container {
+  display: flex;
+}
+.flex-child {
+  flex: 1;
+  border: 2px solid black;
+  justify-content: center;
+  text-align: center;
 }

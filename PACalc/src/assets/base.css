@@ -46,7 +46,7 @@
     --color-border-hover: var(--vt-c-divider-dark-1);
 
     --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
+    --color-text: var(--vt-c-text-dark-1);
   }
 }
 
@@ -141,7 +141,7 @@ body {
   display: inline-block;
   font-size: 16px;
   transition-duration: 0.4s;
-  width: 340px;
+  width: 100%;
 }
 
 .button:hover {
@@ -167,10 +167,10 @@ body {
   font-size: 112px;
   line-height: 136px;
   text-align: center;
-  width: 540px;
+  width: 100%;
 }
 label {
-  color: white;
+  color: black;
 }
 .flex-container {
   display: flex;

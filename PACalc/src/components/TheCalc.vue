@@ -123,284 +123,311 @@ function calculateTEE() {
   teelow.value = targetweight.value * (low.value + traininghours.value) * 2.2
   teehigh.value = targetweight.value * (high.value + traininghours.value) * 2.2
 }
-
-// onMounted(() => {
-//   this.calculateTEE()
-// })
-
-// calculateTEE()
 </script>
 
 <template>
-  <div class="centerdiv">
-    <div class="MyLogoDiv">
-      <img
-        id="responsive-image"
-        src="https://lukaspezenka.files.wordpress.com/2018/02/cropped-header-large-bg.png"
-      />
-    </div>
-  </div>
-
-  <div class="centerdiv">
-    <h2 v-if="step === 1">Wie heißt Du?</h2>
-    <h2 v-if="step === 2">Wie alt bist Du?</h2>
-    <h2 v-if="step === 3">Wie hoch ist Dein Gewicht (in kg)?</h2>
-    <h2 v-if="step === 4">Was ist Dein Geschlecht?</h2>
-    <h2 v-if="step === 5">Wie hoch ist Dein Körperfettanteil (in%)?</h2>
-    <h2 v-if="step === 6">Was ist Dein Zielgewicht (in kg)?</h2>
-    <h2 v-if="step === 7">In der Woche trainierst Du durchschnittlich...?</h2>
-    <h2 v-if="step === 8">Dein Aktivitätsniveau abseits vom Training ist...</h2>
-    <h2 v-if="step === 9">Dein Energiebedarf</h2>
-    <h2 v-if="step === 10">Deine Makronährstoffe</h2>
-  </div>
-
-  <form v-if="step === 1" @submit.prevent="nextStep">
-    <input class="hugeInput" type="text" v-model="name" placeholder="Dein Name" /><br />
-    <input class="button" type="submit" value="OK" :disabled="!name" />
-  </form>
-
-  <form v-if="step === 2" @submit.prevent="nextStep">
-    <input
-      class="hugeInput"
-      type="number"
-      v-model="age"
-      placeholder="Alter"
-      min="18"
-      max="120"
-    /><br />
-    <input class="button" type="submit" value="OK" :disabled="!age" />
-  </form>
-
-  <form v-if="step === 3" @submit.prevent="nextStep">
-    <input class="hugeInput" type="number" v-model="weight" placeholder="Gewicht" min="0" /><br />
-    <input class="button" type="submit" value="OK" :disabled="!weight" />
-  </form>
-
-  <div v-if="step === 4" class="arrange-horizontally">
-    <div class="arrange-vertically">
-      <img
-        src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/man.svg"
-      /><br />
-      <button class="button" @click="setGender('male')">Mann</button>
-    </div>
-    <div class="arrange-vertically">
-      <img
-        src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/woman.svg"
-      /><br />
-      <button class="button" @click="setGender('female')">Frau</button>
-    </div>
-  </div>
-
-  <form v-if="step === 5" @submit.prevent="nextStep">
-    <input
-      class="hugeInput"
-      type="number"
-      v-model="bfatestimate"
-      placeholder="Körperfettanteil"
-    /><br />
-    <input class="button" type="submit" value="OK" :disabled="!bfatestimate" />
-  </form>
-
-  <form v-if="step === 6" @submit.prevent="nextStep">
-    <input
-      class="hugeInput"
-      type="number"
-      v-model="targetweight"
-      placeholder="Zielgewicht"
-      min="0"
-    /><br />
-    <input class="button" type="submit" value="OK" :disabled="!targetweight" />
-  </form>
-
-  <form v-if="step === 7" @submit.prevent="nextStep">
-    <input
-      class="hugeInput"
-      type="number"
-      v-model="traininghours"
-      placeholder="Durchschnittliche Trainingsstunden / Woche"
-    /><br />
-    <input class="button" type="submit" value="OK" :disabled="!traininghours" />
-  </form>
-
-  <form v-if="step === 8" @submit.prevent="nextStep">
-    <div class="flex-container">
-      <div class="flex-child">
+  <div class="container">
+    <div class="centerdiv">
+      <div class="MyLogoDiv">
         <img
-          src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/speedo1.svg"
-          style="width: 100%"
+          id="responsive-image"
+          src="https://lukaspezenka.files.wordpress.com/2018/02/cropped-header-large-bg.png"
+        />
+      </div>
+    </div>
+
+    <div class="centerdiv">
+      <h2 v-if="step === 1">Wie heißt Du?</h2>
+      <h2 v-if="step === 2">Wie alt bist Du?</h2>
+      <h2 v-if="step === 3">Wie hoch ist Dein Gewicht (in kg)?</h2>
+      <h2 v-if="step === 4">Was ist Dein Geschlecht?</h2>
+      <h2 v-if="step === 5">Wie hoch ist Dein Körperfettanteil (in%)?</h2>
+      <h2 v-if="step === 6">Was ist Dein Zielgewicht (in kg)?</h2>
+      <h2 v-if="step === 7">In der Woche trainierst Du durchschnittlich...?</h2>
+      <h2 v-if="step === 8">Dein Aktivitätsniveau abseits vom Training ist...</h2>
+      <h2 v-if="step === 9">Dein Energiebedarf</h2>
+      <h2 v-if="step === 10">Deine Makronährstoffe</h2>
+    </div>
+
+    <div class="container">
+      <form v-if="step === 1" @submit.prevent="nextStep">
+        <input class="hugeInput" type="text" v-model="name" placeholder="Dein Name" /><br />
+        <input class="button" type="submit" value="OK" :disabled="!name" />
+      </form>
+
+      <form v-if="step === 2" @submit.prevent="nextStep">
+        <input
+          class="hugeInput"
+          type="number"
+          v-model="age"
+          placeholder="Alter"
+          min="18"
+          max="120"
         /><br />
-        <button class="button" @click="setNEAT(1)">Niedrig</button>
-      </div>
-      <div class="flex-child">
-        <img
-          src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/speedo2.svg"
-          style="width: 100%"
+        <input class="button" type="submit" value="OK" :disabled="!age" />
+      </form>
+
+      <form v-if="step === 3" @submit.prevent="nextStep">
+        <input
+          class="hugeInput"
+          type="number"
+          v-model="weight"
+          placeholder="Gewicht"
+          min="0"
         /><br />
-        <button class="button" @click="setNEAT(2)">Moderat</button>
+        <input class="button" type="submit" value="OK" :disabled="!weight" />
+      </form>
+
+      <div v-if="step === 4" class="container">
+        <div class="row">
+          <div class="col text-center">
+            <img
+              src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/man.svg"
+            />
+            <br />
+            <button class="button" @click="setGender('male')">Mann</button>
+          </div>
+          <div class="col text-center">
+            <img
+              src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/woman.svg"
+            /><br />
+            <button class="button" @click="setGender('female')">Frau</button>
+          </div>
+        </div>
       </div>
-      <div class="flex-child">
-        <img
-          src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/speedo2.svg"
-          style="width: 100%"
+
+      <form v-if="step === 5" @submit.prevent="nextStep">
+        <input
+          class="hugeInput"
+          type="number"
+          v-model="bfatestimate"
+          placeholder="Körperfettanteil"
         /><br />
-        <button class="button" @click="setNEAT(3)">Hoch</button>
-      </div>
-    </div>
-  </form>
+        <input class="button" type="submit" value="OK" :disabled="!bfatestimate" />
+      </form>
 
-  <div v-if="step === 9" class="centerdiv">
-    <div v-if="step === 9" class="flex-container">
-      <div class="flex-child" style="border: 0px none"></div>
-      <div class="flex-child">Zielgewicht: {{ targetweight }}</div>
-      <div class="flex-child">Training: {{ traininghours }} Stunden / Woche</div>
-      <div class="flex-child">Kalorienbedarf: {{ teelow }} bis {{ teehigh }} / Tag</div>
-      <div class="flex-child" style="border: 0px none"></div>
-    </div>
+      <form v-if="step === 6" @submit.prevent="nextStep">
+        <input
+          class="hugeInput"
+          type="number"
+          v-model="targetweight"
+          placeholder="Zielgewicht"
+          min="0"
+        /><br />
+        <input class="button" type="submit" value="OK" :disabled="!targetweight" />
+      </form>
 
-    <div v-if="step === 9" class="flex-container">
-      <div class="flex-child" style="border: 0px none"></div>
-      <div class="flex-child">
-        Aktivität: {{ neat === 1 ? 'Niedrig' : neat === 2 ? 'Moderat' : 'Hoch' }}
-      </div>
-      <div class="flex-child"></div>
-      <div class="flex-child">
-        Kalorienbedarf:
-        {{ (targetweight * (low + traininghours + neat - 1) * 2.2).toFixed(2) }} kcal / Tag
-      </div>
-      <div class="flex-child" style="border: 0px none"></div>
-    </div>
+      <form v-if="step === 7" @submit.prevent="nextStep">
+        <input
+          class="hugeInput"
+          type="number"
+          v-model="traininghours"
+          placeholder="Durchschnittliche Trainingsstunden / Woche"
+        /><br />
+        <input class="button" type="submit" value="OK" :disabled="!traininghours" />
+      </form>
 
-    <form v-if="step === 9" @submit.prevent="nextStep">
-      <input class="button" type="submit" value="OK" :disabled="!traininghours" />
-    </form>
-  </div>
-
-  <div v-if="step === 10" class="centerdiv">
-    <form @submit.prevent="nextStep">
-      <div class="flex-container" style="background-color: white">
-        <div class="flex-child" style="border: 0px none"></div>
-        <div class="flex-child">
-          <img
-            src="https://cdn1.iconfinder.com/data/icons/fitness-55/300/protein--gym-fitness-sport-512.png"
-            style="width: 100%"
-          /><br />
-          Protein: {{ lowProt }} bis {{ highProt }} Gramm / Tag
-        </div>
-
-        <div class="flex-child">
-          <img src="https://img.icons8.com/ios/452/carbohydrates.png" style="width: 100%" /><br />
-          Kohlenhydrate: {{ lowCarb }} bis {{ highCarb }} Gramm / Tag
-        </div>
-
-        <div class="flex-child">
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVv8gHhj3quy7jDCf_9tboeYiZYJqzpjMLoA&usqp=CAU"
-            style="width: 100%"
-          /><br />
-          Fette: {{ lowFat }} bis {{ highFat }} Gramm / Tag
-        </div>
-        <div class="flex-child" style="border: 0px none"></div>
-      </div>
-      <br />
-      <input type="submit" class="button" value="Verstanden" />
-    </form>
-  </div>
-
-  <div v-if="step === 11" class="centerdiv">
-    <div class="flex-container" style="margin-bottom: 10px; justify-content: center">
-      <div class="flex-child" style="border: 0px none"></div>
-
-      <div class="flex-child">
-        <div class="arrange-vertically">
-          <div class="flex-container">
-            <div class="flex-child">
+      <form v-if="step === 8" @submit.prevent="nextStep">
+        <div class="container">
+          <div class="row">
+            <div class="col">
               <img
-                src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/palm.svg"
-              />
+                src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/speedo1.svg"
+                style="width: 100%"
+              /><br />
+              <button class="button" @click="setNEAT(1)">Niedrig</button>
             </div>
-            <div class="flex-child">
-              Dein täglicher Eiweißbedarf liegt bei {{ proteinservings }} Handtellergroßen
-              Portionen.
-            </div>
-          </div>
-
-          <div class="flex-container">
-            <div class="flex-child">
+            <div class="col">
               <img
-                src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/cupped.svg"
-              />
+                src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/speedo2.svg"
+                style="width: 100%"
+              /><br />
+              <button class="button" @click="setNEAT(2)">Moderat</button>
             </div>
-            <div class="flex-child">
-              Kohlenhydrate befeuern Dein Training und Deine Denkleistung.
-              {{ carbservings }} handvoll (verzehrfertig) sind ein guter Startpunkt.
-            </div>
-          </div>
-
-          <div class="flex-container">
-            <div class="flex-child">
+            <div class="col">
               <img
-                src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/thumb.svg"
-              />
-            </div>
-            <div class="flex-child">
-              Gesunde Fette stützen Dein Immunsystem und helfen Dir, mit Entzündungen zurecht zu
-              kommen. : {{ fatservings }} daumengroße Portionen dürfen es schon sein.
-            </div>
-          </div>
-
-          <div class="flex-container">
-            <div class="flex-child">
-              <img
-                src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/fist.svg"
-              />
-            </div>
-            <div class="flex-child">
-              Eat the Rainbow! Runde Deine Ernährung ab mit {{ veggieservings }} faustgroßen
-              Portionen Gemüse.
+                src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/speedo2.svg"
+                style="width: 100%"
+              /><br />
+              <button class="button" @click="setNEAT(3)">Hoch</button>
             </div>
           </div>
         </div>
+      </form>
+
+      <!-- Summary -->
+      <div v-if="step === 9" class="container">
+        <div class="row">
+          <div class="col">Zielgewicht: {{ targetweight }}</div>
+          <div class="col">Training: {{ traininghours }} Stunden / Woche</div>
+          <div class="col">
+            Kalorienbedarf: {{ Math.round(teelow) }} bis {{ Math.round(teehigh) }} / Tag
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col" style="border: 0px none"></div>
+          <div class="col">
+            Aktivität: {{ neat === 1 ? 'Niedrig' : neat === 2 ? 'Moderat' : 'Hoch' }}
+          </div>
+          <div class="col"></div>
+          <div class="col">
+            Kalorienbedarf:
+            {{ (targetweight * (low + traininghours + neat - 1) * 2.2).toFixed(2) }} kcal / Tag
+          </div>
+        </div>
+
+        <form v-if="step === 9" @submit.prevent="nextStep">
+          <input class="button" type="submit" value="OK" :disabled="!traininghours" />
+        </form>
       </div>
 
-      <div class="flex-child" style="border: 0px none"></div>
-    </div>
-
-    <div class="flex-container" style="margin-bottom: 10px">
-      <div class="flex-child" style="border: 0px none"></div>
-      <div class="flex-child" style="border: 0px none">
-        <div class="arrange-vertically">
-          <div style="margin-bottom: 10px">
-            Bei diesen Portionsvorgaben nimmst Du im Schnitt die folgenden Makronährstoffe zu Dir:
-          </div>
-          <div class="flex-container">
-            <div class="flex-child">
-              <img
-                id="responsive-image"
-                src="https://thumbs.dreamstime.com/z/protein-icon-illustration-white-background-protein-icon-illustration-119365622.jpg"
-              />
-            </div>
-            <div class="flex-child">{{ totalprotein }} Gramm Eiweiß</div>
+      <!-- Macronutrient breakdown -->
+      <div v-if="step === 10" class="container">
+        <div class="row pt-4" style="background-color: white">
+          <div class="col text-center">
+            <img
+              src="https://cdn1.iconfinder.com/data/icons/fitness-55/300/protein--gym-fitness-sport-512.png"
+              style="width: 100%"
+            /><br />
+            Protein: {{ Math.round(lowProt) }} bis {{ highProt }} Gramm / Tag
           </div>
 
-          <div class="flex-container">
-            <div class="flex-child">
-              <img id="responsive-image" src="https://img.icons8.com/ios/452/carbohydrates.png" />
-            </div>
-            <div class="flex-child">{{ totalcarbs }} Gramm Kohlenhydrate</div>
+          <div class="col text-center">
+            <img src="https://img.icons8.com/ios/452/carbohydrates.png" style="width: 100%" /><br />
+            Kohlenhydrate: {{ Math.round(lowCarb) }} bis {{ Math.round(highCarb) }} Gramm / Tag
           </div>
 
-          <div class="flex-container">
-            <div class="flex-child">
-              <img
-                id="responsive-image"
-                src="https://www.pngitem.com/pimgs/m/163-1631365_trans-fat-no-trans-fat-icon-hd-png.png"
-              />
+          <div class="col text-center">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVv8gHhj3quy7jDCf_9tboeYiZYJqzpjMLoA&usqp=CAU"
+              style="width: 100%"
+            /><br />
+            Fette: {{ Math.round(lowFat) }} bis {{ Math.round(highFat) }} Gramm / Tag
+          </div>
+        </div>
+        <br />
+        <form @submit.prevent="nextStep">
+          <input type="submit" class="button" value="Verstanden" />
+        </form>
+      </div>
+
+      <!-- Hand portion size breakdown -->
+      <div v-if="step === 11" class="container">
+        <div class="row pt-4">
+          <div class="col text-center">
+            <div class="row">
+              <div class="col text-center">
+                <img
+                  src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/palm.svg"
+                />
+              </div>
             </div>
-            <div class="flex-child">{{ totalfats }} Gramm Fett</div>
+            <div class="row">
+              <div class="col text-center">
+                Dein täglicher Eiweißbedarf liegt bei {{ proteinservings }} Handtellergroßen
+                Portionen.
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="row">
+              <div class="col text-center">
+                <img
+                  src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/cupped.svg"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                Kohlenhydrate befeuern Dein Training und Deine Denkleistung.
+                {{ carbservings }} handvoll (verzehrfertig) sind ein guter Startpunkt.
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="row">
+              <div class="col">
+                <img
+                  src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/thumb.svg"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                Gesunde Fette stützen Dein Immunsystem und helfen Dir, mit Entzündungen zurecht zu
+                kommen. : {{ fatservings }} daumengroße Portionen dürfen es schon sein.
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="row">
+              <div class="col">
+                <img
+                  src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/fist.svg"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                Eat the Rainbow! Runde Deine Ernährung ab mit {{ veggieservings }} faustgroßen
+                Portionen Gemüse.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row pt-4">
+          <div class="col text-center">
+            Bei diesen Portionsvorgaben nimmst Du im Schnitt {{ totalcalories }} Kalorien, und die
+            folgenden Makronährstoffe zu Dir:
+          </div>
+        </div>
+
+        <div class="row pt-4">
+          <div class="col text-center">
+            <div class="row">
+              <div class="col">
+                <img
+                  id="responsive-image"
+                  src="https://thumbs.dreamstime.com/z/protein-icon-illustration-white-background-protein-icon-illustration-119365622.jpg"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">{{ totalprotein }} Gramm Eiweiß</div>
+            </div>
+          </div>
+
+          <div class="col text center">
+            <div class="row">
+              <div class="col text-center">
+                <img id="responsive-image" src="https://img.icons8.com/ios/452/carbohydrates.png" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col text-center">{{ totalcarbs }} Gramm Kohlenhydrate</div>
+            </div>
+          </div>
+
+          <div class="col text center">
+            <div class="row">
+              <div class="col text-center">
+                <img
+                  id="responsive-image"
+                  src="https://www.pngitem.com/pimgs/m/163-1631365_trans-fat-no-trans-fat-icon-hd-png.png"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col text-center">{{ totalfats }} Gramm Fette</div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="flex-child" style="border: 0px none"></div>
     </div>
   </div>
 </template>

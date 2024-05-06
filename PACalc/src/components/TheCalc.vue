@@ -126,8 +126,8 @@ function calculateTEE() {
 </script>
 
 <template>
-  <div class="container">
-    <div class="centerdiv">
+  <div class="container align-middle">
+    <div class="text-center">
       <div class="MyLogoDiv">
         <img
           id="responsive-image"

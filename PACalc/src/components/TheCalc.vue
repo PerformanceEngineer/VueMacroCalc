@@ -45,15 +45,42 @@ function calculateHandSizes() {
   proteinservings = protein.value / proteinperservingprotein.value
   remainingcals.value -= proteinservings * kcalperservingprotein
 
-  const fatperservingfat = gender.value === 'male' ? 9.0 : 8.0
+  let fatperservingfat = gender.value === 'male' ? 9.0 : 8.0
   fatservings = highFat.value / fatperservingfat
   const kcalperservingfat = 90.0
   remainingcals.value -= fatservings * kcalperservingfat
 
-  const carbsperservingcarbs = gender.value === 'male' ? 25.0 : 22.0
+  let carbsperservingcarbs = gender.value === 'male' ? 25.0 : 22.0
   carbservings = highCarb.value / carbsperservingcarbs
 
   veggieservings = gender.value === 'male' ? 8.0 : 6.0
+
+  let proteinperservingfat = 1.0
+  let proteinperservingcarbs = 5.0
+  let fatperservingprotein = 0.0
+  let fatperservingcarbs = 1.0
+  let carbsperservingprotein = 0.0
+  let carbsperservingfat = 0.0
+  carbsperservingcarbs = 19.0
+  fatperservingfat = 9.0
+
+
+  let result = solveEquations(
+    proteinperservingprotein.value,
+    proteinperservingfat.value,
+    proteinperservingcarbs.value,
+    fatperservingprotein.value,
+    fatperservingfat.value,
+    fatperservingcarbs.value,
+    carbsperservingprotein.value,
+    carbsperservingfat.value,
+    carbsperservingcarbs.value,
+    protein.value,
+    highFat.value,
+    teehigh.value
+  )
+
+  console.log(result)
 
   if (gender.value === 'male') {
     proteinservings =
@@ -123,6 +150,45 @@ function calculateTEE() {
   teelow.value = targetweight.value * (low.value + traininghours.value) * 2.2
   teehigh.value = targetweight.value * (high.value + traininghours.value) * 2.2
 }
+
+function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
+    // Coefficients of the system of equations
+    let coefficients = [
+        [pp, pf, pc],
+        [fp, ff, fc],
+        [cp, cf, cc]
+    ];
+
+    // Right-hand side of the equations
+    let rhs = [PR, FR, (TEE - (PR * 4 + FR * 9)) / 4];
+
+    // Gaussian elimination
+    for (let i = 0; i < 3; i++) {
+        // Pivot for column
+        let pivot = coefficients[i][i];
+
+        // Divide every element of current row by pivot
+        for (let j = i; j < 3; j++) {
+            coefficients[i][j] /= pivot;
+        }
+        rhs[i] /= pivot;
+
+        // Eliminate all other entries in current column
+        for (let k = 0; k < 3; k++) {
+            if (k !== i) {
+                let factor = coefficients[k][i];
+                for (let j = i; j < 3; j++) {
+                    coefficients[k][j] -= factor * coefficients[i][j];
+                }
+                rhs[k] -= factor * rhs[i];
+            }
+        }
+    }
+
+    // Return values of x, y, z
+    return { x: rhs[0], y: rhs[1], z: rhs[2] };
+}
+
 </script>
 
 <template>

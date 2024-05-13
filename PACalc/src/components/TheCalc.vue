@@ -64,17 +64,16 @@ function calculateHandSizes() {
   carbsperservingcarbs = 19.0
   fatperservingfat = 9.0
 
-
   let result = solveEquations(
     proteinperservingprotein.value,
-    proteinperservingfat.value,
-    proteinperservingcarbs.value,
-    fatperservingprotein.value,
-    fatperservingfat.value,
-    fatperservingcarbs.value,
-    carbsperservingprotein.value,
-    carbsperservingfat.value,
-    carbsperservingcarbs.value,
+    proteinperservingfat,
+    proteinperservingcarbs,
+    fatperservingprotein,
+    fatperservingfat,
+    fatperservingcarbs,
+    carbsperservingprotein,
+    carbsperservingfat,
+    carbsperservingcarbs,
     protein.value,
     highFat.value,
     teehigh.value
@@ -82,33 +81,33 @@ function calculateHandSizes() {
 
   console.log(result)
 
-  if (gender.value === 'male') {
-    proteinservings =
-      0.04369122257053291 * protein.value -
-      0.02155936207914943 * highFat.value -
-      0.0035440047253396337 * highCarb.value
-    carbservings =
-      -0.0049222287851939358 * protein.value -
-      0.002067336089781453 * highFat.value +
-      0.04075605434140578 * highCarb.value
-    fatservings =
-      -0.008663122661941327 * protein.value +
-      0.1163614884819846 * highFat.value -
-      0.0082693443591258121 * highCarb.value
-  } else {
-    proteinservings =
-      0.04768856447688564 * protein.value -
-      0.02092457420924574 * highFat.value -
-      0.0024330900243309 * highCarb.value
-    carbservings =
-      -0.00608272506082725 * protein.value -
-      0.0024330900243309 * highFat.value +
-      0.046228710462287104 * highCarb.value
-    fatservings =
-      -0.0024330900243309 * protein.value +
-      0.116301703163017 * highFat.value -
-      0.0097323600973236 * highCarb.value
-  }
+  // if (gender.value === 'male') {
+  //   proteinservings =
+  //     0.04369122257053291 * protein.value -
+  //     0.02155936207914943 * highFat.value -
+  //     0.0035440047253396337 * highCarb.value
+  //   carbservings =
+  //     -0.0049222287851939358 * protein.value -
+  //     0.002067336089781453 * highFat.value +
+  //     0.04075605434140578 * highCarb.value
+  //   fatservings =
+  //     -0.008663122661941327 * protein.value +
+  //     0.1163614884819846 * highFat.value -
+  //     0.0082693443591258121 * highCarb.value
+  // } else {
+  //   proteinservings =
+  //     0.04768856447688564 * protein.value -
+  //     0.02092457420924574 * highFat.value -
+  //     0.0024330900243309 * highCarb.value
+  //   carbservings =
+  //     -0.00608272506082725 * protein.value -
+  //     0.0024330900243309 * highFat.value +
+  //     0.046228710462287104 * highCarb.value
+  //   fatservings =
+  //     -0.0024330900243309 * protein.value +
+  //     0.116301703163017 * highFat.value -
+  //     0.0097323600973236 * highCarb.value
+  // }
 
   proteinservings = Math.round(proteinservings)
   carbservings = Math.round(carbservings)
@@ -152,43 +151,42 @@ function calculateTEE() {
 }
 
 function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
-    // Coefficients of the system of equations
-    let coefficients = [
-        [pp, pf, pc],
-        [fp, ff, fc],
-        [cp, cf, cc]
-    ];
+  // Coefficients of the system of equations
+  let coefficients = [
+    [pp, pf, pc],
+    [fp, ff, fc],
+    [cp, cf, cc]
+  ]
 
-    // Right-hand side of the equations
-    let rhs = [PR, FR, (TEE - (PR * 4 + FR * 9)) / 4];
+  // Right-hand side of the equations
+  let rhs = [PR, FR, (TEE - (PR * 4 + FR * 9)) / 4]
 
-    // Gaussian elimination
-    for (let i = 0; i < 3; i++) {
-        // Pivot for column
-        let pivot = coefficients[i][i];
+  // Gaussian elimination
+  for (let i = 0; i < 3; i++) {
+    // Pivot for column
+    let pivot = coefficients[i][i]
 
-        // Divide every element of current row by pivot
-        for (let j = i; j < 3; j++) {
-            coefficients[i][j] /= pivot;
-        }
-        rhs[i] /= pivot;
-
-        // Eliminate all other entries in current column
-        for (let k = 0; k < 3; k++) {
-            if (k !== i) {
-                let factor = coefficients[k][i];
-                for (let j = i; j < 3; j++) {
-                    coefficients[k][j] -= factor * coefficients[i][j];
-                }
-                rhs[k] -= factor * rhs[i];
-            }
-        }
+    // Divide every element of current row by pivot
+    for (let j = i; j < 3; j++) {
+      coefficients[i][j] /= pivot
     }
+    rhs[i] /= pivot
 
-    // Return values of x, y, z
-    return { x: rhs[0], y: rhs[1], z: rhs[2] };
+    // Eliminate all other entries in current column
+    for (let k = 0; k < 3; k++) {
+      if (k !== i) {
+        let factor = coefficients[k][i]
+        for (let j = i; j < 3; j++) {
+          coefficients[k][j] -= factor * coefficients[i][j]
+        }
+        rhs[k] -= factor * rhs[i]
+      }
+    }
+  }
+
+  // Return values of x, y, z
+  return { x: Math.ceil(rhs[0]), y: Math.ceil(rhs[1]), z: Math.ceil(rhs[2]) }
 }
-
 </script>
 
 <template>
@@ -202,7 +200,7 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
       </div>
     </div>
 
-    <div class="centerdiv">
+    <div class="container text-center pt-3 pb-3">
       <h2 v-if="step === 1">Wie heißt Du?</h2>
       <h2 v-if="step === 2">Wie alt bist Du?</h2>
       <h2 v-if="step === 3">Wie hoch ist Dein Gewicht (in kg)?</h2>
@@ -213,6 +211,13 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
       <h2 v-if="step === 8">Dein Aktivitätsniveau abseits vom Training ist...</h2>
       <h2 v-if="step === 9">Dein Energiebedarf</h2>
       <h2 v-if="step === 10">Deine Makronährstoffe</h2>
+    </div>
+
+    <div class="container pt-3 pb-3">
+      <h3 v-if="step === 7">
+        Deine wöchentliche Trainingszeit schlägt sich wesentlich auf deinen Energiebedarf nieder.
+        Wie viele Stunden pro Woche trainierst Du durchschnittlich?
+      </h3>
     </div>
 
     <div class="container">

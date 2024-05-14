@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
+import carbimage from '../assets/carbs.svg'
 
 const step = ref(1)
 const name = ref('')
@@ -61,20 +62,20 @@ function calculateHandSizes() {
   let fatperservingcarbs = 1.0
   let carbsperservingprotein = 0.0
   let carbsperservingfat = 0.0
-  carbsperservingcarbs = 19.0
-  fatperservingfat = 9.0
+  //carbsperservingcarbs = 19.0
+  //fatperservingfat = 9.0
 
 
   let result = solveEquations(
     proteinperservingprotein.value,
-    proteinperservingfat.value,
-    proteinperservingcarbs.value,
-    fatperservingprotein.value,
-    fatperservingfat.value,
-    fatperservingcarbs.value,
-    carbsperservingprotein.value,
-    carbsperservingfat.value,
-    carbsperservingcarbs.value,
+    proteinperservingfat,
+    proteinperservingcarbs,
+    fatperservingprotein,
+    fatperservingfat,
+    fatperservingcarbs,
+    carbsperservingprotein,
+    carbsperservingfat,
+    carbsperservingcarbs,
     protein.value,
     highFat.value,
     teehigh.value
@@ -82,44 +83,50 @@ function calculateHandSizes() {
 
   console.log(result)
 
-  if (gender.value === 'male') {
-    proteinservings =
-      0.04369122257053291 * protein.value -
-      0.02155936207914943 * highFat.value -
-      0.0035440047253396337 * highCarb.value
-    carbservings =
-      -0.0049222287851939358 * protein.value -
-      0.002067336089781453 * highFat.value +
-      0.04075605434140578 * highCarb.value
-    fatservings =
-      -0.008663122661941327 * protein.value +
-      0.1163614884819846 * highFat.value -
-      0.0082693443591258121 * highCarb.value
-  } else {
-    proteinservings =
-      0.04768856447688564 * protein.value -
-      0.02092457420924574 * highFat.value -
-      0.0024330900243309 * highCarb.value
-    carbservings =
-      -0.00608272506082725 * protein.value -
-      0.0024330900243309 * highFat.value +
-      0.046228710462287104 * highCarb.value
-    fatservings =
-      -0.0024330900243309 * protein.value +
-      0.116301703163017 * highFat.value -
-      0.0097323600973236 * highCarb.value
-  }
+  // if (gender.value === 'male') {
+  //   proteinservings =
+  //     0.04369122257053291 * protein.value -
+  //     0.02155936207914943 * highFat.value -
+  //     0.0035440047253396337 * highCarb.value
+  //   carbservings =
+  //     -0.0049222287851939358 * protein.value -
+  //     0.002067336089781453 * highFat.value +
+  //     0.04075605434140578 * highCarb.value
+  //   fatservings =
+  //     -0.008663122661941327 * protein.value +
+  //     0.1163614884819846 * highFat.value -
+  //     0.0082693443591258121 * highCarb.value
+  // } else {
+  //   proteinservings =
+  //     0.04768856447688564 * protein.value -
+  //     0.02092457420924574 * highFat.value -
+  //     0.0024330900243309 * highCarb.value
+  //   carbservings =
+  //     -0.00608272506082725 * protein.value -
+  //     0.0024330900243309 * highFat.value +
+  //     0.046228710462287104 * highCarb.value
+  //   fatservings =
+  //     -0.0024330900243309 * protein.value +
+  //     0.116301703163017 * highFat.value -
+  //     0.0097323600973236 * highCarb.value
+  // }
+
+  proteinservings = result.x
+  fatservings = result.y
+  carbservings = result.z
 
   proteinservings = Math.round(proteinservings)
   carbservings = Math.round(carbservings)
   fatservings = Math.round(fatservings)
 
   totalprotein =
-    proteinservings * 24.0 + carbservings * 3.0 + fatservings * 2.0 + veggieservings * 1.5
+    proteinservings * proteinperservingprotein.value + carbservings * proteinperservingcarbs + fatservings * proteinperservingfat + veggieservings * 1.5
   totalcarbs =
-    proteinservings * 2.0 + carbservings * 22.0 + fatservings * 2.0 + veggieservings * 5.0
-  totalfats = proteinservings * 4.5 + carbservings * 1.0 + fatservings * 8.0
+    proteinservings * carbsperservingprotein + carbservings * carbsperservingcarbs + fatservings * carbsperservingfat + veggieservings * 5.0
+  totalfats = 
+    proteinservings * fatperservingprotein + carbservings * fatperservingcarbs + fatservings * fatperservingfat
   totalcalories = totalprotein * 4.5 + totalcarbs * 4.5 + totalfats * 9.0
+  
 }
 
 function nextStep() {
@@ -153,14 +160,30 @@ function calculateTEE() {
 
 function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
     // Coefficients of the system of equations
+
+  console.log("entering solveEquations")
+
     let coefficients = [
         [pp, pf, pc],
         [fp, ff, fc],
         [cp, cf, cc]
     ];
 
+  console.log("coefficients: " + coefficients)
+  //for (let i = 0; i < coefficients.length; i++) {
+  //     console.log("coefficient " +i +" : " + coefficients[i])
+  //   }
+
+  //   for (let i = 0; i < coefficients.length; i++) {
+  //   if (typeof coefficients[i] !== 'number') {
+  //     console.error(`Parameter ${i} is not a number: ${coefficients[i]}`);
+  //     return;
+  //   }
+  // }
+
     // Right-hand side of the equations
     let rhs = [PR, FR, (TEE - (PR * 4 + FR * 9)) / 4];
+    console.log("rhs: " + rhs)
 
     // Gaussian elimination
     for (let i = 0; i < 3; i++) {
@@ -185,8 +208,11 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
         }
     }
 
+
+    console.log("rhs: " + rhs[0] + " " + rhs[1] + " " + rhs[2] )
+
     // Return values of x, y, z
-    return { x: rhs[0], y: rhs[1], z: rhs[2] };
+    return { x: Math.ceil(rhs[0]), y: Math.ceil(rhs[1]), z: Math.ceil(rhs[2]) };
 }
 
 </script>
@@ -471,7 +497,7 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
           <div class="col text center">
             <div class="row">
               <div class="col text-center">
-                <img id="responsive-image" src="https://img.icons8.com/ios/452/carbohydrates.png" />
+                <img id="responsive-image" :src="carbimage" />
               </div>
             </div>
             <div class="row">

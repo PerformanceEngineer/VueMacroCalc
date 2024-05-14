@@ -65,7 +65,6 @@ function calculateHandSizes() {
   //carbsperservingcarbs = 19.0
   //fatperservingfat = 9.0
 
-
   let result = solveEquations(
     proteinperservingprotein.value,
     proteinperservingfat,
@@ -159,67 +158,47 @@ function calculateTEE() {
 }
 
 function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
-    // Coefficients of the system of equations
+  // Coefficients of the system of equations
+  let coefficients = [
+    [pp, pf, pc],
+    [fp, ff, fc],
+    [cp, cf, cc]
+  ]
 
-  console.log("entering solveEquations")
+  // Right-hand side of the equations
+  let rhs = [PR, FR, (TEE - (PR * 4 + FR * 9)) / 4]
 
-    let coefficients = [
-        [pp, pf, pc],
-        [fp, ff, fc],
-        [cp, cf, cc]
-    ];
+  // Gaussian elimination
+  for (let i = 0; i < 3; i++) {
+    // Pivot for column
+    let pivot = coefficients[i][i]
 
-  console.log("coefficients: " + coefficients)
-  //for (let i = 0; i < coefficients.length; i++) {
-  //     console.log("coefficient " +i +" : " + coefficients[i])
-  //   }
-
-  //   for (let i = 0; i < coefficients.length; i++) {
-  //   if (typeof coefficients[i] !== 'number') {
-  //     console.error(`Parameter ${i} is not a number: ${coefficients[i]}`);
-  //     return;
-  //   }
-  // }
-
-    // Right-hand side of the equations
-    let rhs = [PR, FR, (TEE - (PR * 4 + FR * 9)) / 4];
-    console.log("rhs: " + rhs)
-
-    // Gaussian elimination
-    for (let i = 0; i < 3; i++) {
-        // Pivot for column
-        let pivot = coefficients[i][i];
-
-        // Divide every element of current row by pivot
-        for (let j = i; j < 3; j++) {
-            coefficients[i][j] /= pivot;
-        }
-        rhs[i] /= pivot;
-
-        // Eliminate all other entries in current column
-        for (let k = 0; k < 3; k++) {
-            if (k !== i) {
-                let factor = coefficients[k][i];
-                for (let j = i; j < 3; j++) {
-                    coefficients[k][j] -= factor * coefficients[i][j];
-                }
-                rhs[k] -= factor * rhs[i];
-            }
-        }
+    // Divide every element of current row by pivot
+    for (let j = i; j < 3; j++) {
+      coefficients[i][j] /= pivot
     }
+    rhs[i] /= pivot
 
+    // Eliminate all other entries in current column
+    for (let k = 0; k < 3; k++) {
+      if (k !== i) {
+        let factor = coefficients[k][i]
+        for (let j = i; j < 3; j++) {
+          coefficients[k][j] -= factor * coefficients[i][j]
+        }
+        rhs[k] -= factor * rhs[i]
+      }
+    }
+  }
 
-    console.log("rhs: " + rhs[0] + " " + rhs[1] + " " + rhs[2] )
-
-    // Return values of x, y, z
-    return { x: Math.ceil(rhs[0]), y: Math.ceil(rhs[1]), z: Math.ceil(rhs[2]) };
+  // Return values of x, y, z
+  return { x: Math.ceil(rhs[0]), y: Math.ceil(rhs[1]), z: Math.ceil(rhs[2]) }
 }
-
 </script>
 
 <template>
-  <div class="container">
-    <div class="centerdiv">
+  <div class="container align-middle">
+    <div class="text-center">
       <div class="MyLogoDiv">
         <img
           id="responsive-image"
@@ -228,7 +207,7 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
       </div>
     </div>
 
-    <div class="centerdiv">
+    <div class="container text-center pt-3 pb-3">
       <h2 v-if="step === 1">Wie heißt Du?</h2>
       <h2 v-if="step === 2">Wie alt bist Du?</h2>
       <h2 v-if="step === 3">Wie hoch ist Dein Gewicht (in kg)?</h2>
@@ -239,6 +218,13 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
       <h2 v-if="step === 8">Dein Aktivitätsniveau abseits vom Training ist...</h2>
       <h2 v-if="step === 9">Dein Energiebedarf</h2>
       <h2 v-if="step === 10">Deine Makronährstoffe</h2>
+    </div>
+
+    <div class="container pt-3 pb-3">
+      <h3 v-if="step === 7">
+        Deine wöchentliche Trainingszeit schlägt sich wesentlich auf deinen Energiebedarf nieder.
+        Wie viele Stunden pro Woche trainierst Du durchschnittlich?
+      </h3>
     </div>
 
     <div class="container">

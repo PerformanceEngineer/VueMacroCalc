@@ -7,7 +7,7 @@ const name = ref('')
 const age = ref(null)
 const weight = ref(null)
 const gender = ref('')
-const bfatestimate = ref(null)
+//const bfatestimate = ref(null)
 const targetweight = ref(null)
 const traininghours = ref(null)
 const neat = ref(null)
@@ -18,12 +18,14 @@ const low = ref(0.0)
 const high = ref(0.0)
 
 // Computed properties for calculating the macronutrient ranges
-const lbm = computed(() => weight.value * (1.0 - bfatestimate.value / 100.0))
-const lowProt = computed(() => Math.round(lbm.value * 1.8))
+//const lbm = computed(() => weight.value * (1.0 - bfatestimate.value / 100.0))
+//const lowProt = computed(() => Math.round(lbm.value * 1.8))
+const lowProt = computed(() => Math.round(weight.value * 1.8))
 const lowFat = computed(() => (teelow.value * 0.2) / 9.0)
 const lowCarb = computed(() => (teelow.value * 0.8 - lowProt.value * 4.5) / 4.5)
 
-const highProt = computed(() => Math.round(lbm.value * 2.2))
+const highProt = computed(() => Math.round(weight.value * 2.2))
+//const highProt = computed(() => Math.round(lbm.value * 2.2))
 const highFat = computed(() => (teehigh.value * 0.2) / 9.0)
 const highCarb = computed(() => (teehigh.value * 0.8 - highProt.value * 4.5) / 4.5)
 
@@ -31,7 +33,8 @@ let remainingcals = teehigh
 
 const proteinperservingprotein = computed(() => (gender.value === 'male' ? 24.0 : 22.0))
 const kcalperservingprotein = 145
-const protein = computed(() => lbm.value * 2.0)
+const protein = computed(() => weight.value * 2.0)
+//const protein = computed(() => lbm.value * 2.0)
 
 let proteinservings = 0
 let fatservings = 0
@@ -43,6 +46,11 @@ let totalcarbs = 0
 let veggieservings = 0
 
 function calculateHandSizes() {
+
+  console.info('Calculating hand sizes')
+  console.info('Protein: ' + protein.value)
+  console.info('Calories' + teehigh.value)
+
   proteinservings = protein.value / proteinperservingprotein.value
   remainingcals.value -= proteinservings * kcalperservingprotein
 
@@ -131,8 +139,8 @@ function calculateHandSizes() {
 function nextStep() {
   step.value++
   console.log('step:' + step.value.toString())
-  if (step.value == 9) calculateTEE()
-  if (step.value == 11) calculateHandSizes()
+  if (step.value == 8) calculateTEE()
+  if (step.value == 10) calculateHandSizes()
 }
 
 function setGender(g) {
@@ -212,12 +220,12 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
       <h2 v-if="step === 2">Wie alt bist Du?</h2>
       <h2 v-if="step === 3">Wie hoch ist Dein Gewicht (in kg)?</h2>
       <h2 v-if="step === 4">Was ist Dein Geschlecht?</h2>
-      <h2 v-if="step === 5">Wie hoch ist Dein Körperfettanteil (in%)?</h2>
-      <h2 v-if="step === 6">Was ist Dein Zielgewicht (in kg)?</h2>
-      <h2 v-if="step === 7">In der Woche trainierst Du durchschnittlich...?</h2>
-      <h2 v-if="step === 8">Dein Aktivitätsniveau abseits vom Training ist...</h2>
-      <h2 v-if="step === 9">Dein Energiebedarf</h2>
-      <h2 v-if="step === 10">Deine Makronährstoffe</h2>
+      <!-- <h2 v-if="step === 5">Wie hoch ist Dein Körperfettanteil (in%)?</h2> -->
+      <h2 v-if="step === 5">Was ist Dein Zielgewicht (in kg)?</h2>
+      <h2 v-if="step === 6">In der Woche trainierst Du durchschnittlich...?</h2>
+      <h2 v-if="step === 7">Dein Aktivitätsniveau abseits vom Training ist...</h2>
+      <h2 v-if="step === 8">Dein Energiebedarf</h2>
+      <h2 v-if="step === 9">Deine Makronährstoffe</h2>
     </div>
 
     <div class="container pt-3 pb-3">
@@ -274,7 +282,7 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
         </div>
       </div>
 
-      <form v-if="step === 5" @submit.prevent="nextStep">
+      <!-- <form v-if="step === 5" @submit.prevent="nextStep">
         <input
           class="hugeInput"
           type="number"
@@ -282,9 +290,9 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
           placeholder="Körperfettanteil"
         /><br />
         <input class="button" type="submit" value="OK" :disabled="!bfatestimate" />
-      </form>
+      </form> -->
 
-      <form v-if="step === 6" @submit.prevent="nextStep">
+      <form v-if="step === 5" @submit.prevent="nextStep">
         <input
           class="hugeInput"
           type="number"
@@ -295,7 +303,7 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
         <input class="button" type="submit" value="OK" :disabled="!targetweight" />
       </form>
 
-      <form v-if="step === 7" @submit.prevent="nextStep">
+      <form v-if="step === 6" @submit.prevent="nextStep">
         <input
           class="hugeInput"
           type="number"
@@ -305,7 +313,7 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
         <input class="button" type="submit" value="OK" :disabled="!traininghours" />
       </form>
 
-      <form v-if="step === 8" @submit.prevent="nextStep">
+      <form v-if="step === 7" @submit.prevent="nextStep">
         <div class="container">
           <div class="row">
             <div class="col">
@@ -334,7 +342,7 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
       </form>
 
       <!-- Summary -->
-      <div v-if="step === 9" class="container">
+      <div v-if="step === 8" class="container">
         <div class="row">
           <div class="col">Zielgewicht: {{ targetweight }}</div>
           <div class="col">Training: {{ traininghours }} Stunden / Woche</div>
@@ -355,13 +363,13 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
           </div>
         </div>
 
-        <form v-if="step === 9" @submit.prevent="nextStep">
+        <form v-if="step === 8" @submit.prevent="nextStep">
           <input class="button" type="submit" value="OK" :disabled="!traininghours" />
         </form>
       </div>
 
       <!-- Macronutrient breakdown -->
-      <div v-if="step === 10" class="container">
+      <div v-if="step === 9" class="container">
         <div class="row pt-4" style="background-color: white">
           <div class="col text-center">
             <img
@@ -391,7 +399,7 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
       </div>
 
       <!-- Hand portion size breakdown -->
-      <div v-if="step === 11" class="container">
+      <div v-if="step === 10" class="container">
         <div class="row pt-4">
           <div class="col text-center">
             <div class="row">

@@ -66,23 +66,40 @@ function calculateHandSizes() {
 
   let proteinperservingfat = 1.0
   let proteinperservingcarbs = 5.0
-  let fatperservingprotein = 0.0
+  let fatperservingprotein = 3.0
   let fatperservingcarbs = 1.0
-  let carbsperservingprotein = 0.0
+  let carbsperservingprotein = 6.0
   let carbsperservingfat = 0.0
   //carbsperservingcarbs = 19.0
   //fatperservingfat = 9.0
+  let proteinperservingveggies = 1.8
+  let carbsperservingveggies = 3.1
+  let fatsperservingveggies = 0.0
+  let kcalperservingveggies = 33.0
+
+  let kcalperservingcarbs = 104
 
   let result = solveEquations(
     proteinperservingprotein.value,
     proteinperservingfat,
     proteinperservingcarbs,
+    // proteinperservingveggies,
+    
     fatperservingprotein,
     fatperservingfat,
     fatperservingcarbs,
+    // fatsperservingveggies,
+    
     carbsperservingprotein,
     carbsperservingfat,
     carbsperservingcarbs,
+    // carbsperservingveggies,
+    
+    // kcalperservingveggies,
+    // kcalperservingprotein,
+    // kcalperservingfat,
+    // kcalperservingcarbs,
+
     protein.value,
     highFat.value,
     teehigh.value
@@ -118,23 +135,65 @@ function calculateHandSizes() {
   //     0.0097323600973236 * highCarb.value
   // }
 
-  proteinservings = result.x
-  fatservings = result.y
-  carbservings = result.z
+  proteinservings = result.protein
+  fatservings = result.fat
+  carbservings = result.carbs
+  //veggieservings = result.veggies
 
   proteinservings = Math.round(proteinservings)
   carbservings = Math.round(carbservings)
   fatservings = Math.round(fatservings)
 
-  totalprotein =
-    proteinservings * proteinperservingprotein.value + carbservings * proteinperservingcarbs + fatservings * proteinperservingfat + veggieservings * 1.5
-  totalcarbs =
-    proteinservings * carbsperservingprotein + carbservings * carbsperservingcarbs + fatservings * carbsperservingfat + veggieservings * 5.0
-  totalfats = 
-    proteinservings * fatperservingprotein + carbservings * fatperservingcarbs + fatservings * fatperservingfat
-  totalcalories = totalprotein * 4 + totalcarbs * 4 + totalfats * 9.0
+  let macros = calculateResult(proteinservings, fatservings, carbservings, veggieservings, proteinperservingprotein, proteinperservingcarbs, proteinperservingfat, proteinperservingveggies, fatperservingprotein, fatperservingcarbs, fatperservingfat, fatsperservingveggies, carbsperservingprotein, carbsperservingcarbs, carbsperservingfat, carbsperservingveggies, kcalperservingprotein, kcalperservingcarbs, kcalperservingfat, kcalperservingveggies)
+
+  while (macros.totalcalories > teehigh.value){
+    carbservings--
+    macros = calculateResult(proteinservings, fatservings, carbservings, veggieservings, proteinperservingprotein, proteinperservingcarbs, proteinperservingfat, proteinperservingveggies, fatperservingprotein, fatperservingcarbs, fatperservingfat, fatsperservingveggies, carbsperservingprotein, carbsperservingcarbs, carbsperservingfat, carbsperservingveggies, kcalperservingprotein, kcalperservingcarbs, kcalperservingfat, kcalperservingveggies)
+  }
+
+  // totalprotein =
+  //   proteinservings * proteinperservingprotein.value + carbservings * proteinperservingcarbs + fatservings * proteinperservingfat + veggieservings * proteinperservingveggies
+  // totalcarbs =
+  //   proteinservings * carbsperservingprotein + carbservings * carbsperservingcarbs + fatservings * carbsperservingfat + veggieservings * carbsperservingveggies
+  // totalfats = 
+  //   proteinservings * fatperservingprotein + carbservings * fatperservingcarbs + fatservings * fatperservingfat + veggieservings * fatsperservingveggies
+  // totalcalories =  proteinservings * kcalperservingprotein + carbservings * kcalperservingcarbs + fatservings * kcalperservingfat + veggieservings * kcalperservingveggies
+  // //totalprotein * 4 + totalcarbs * 4 + totalfats * 9.0
   
 }
+
+function calculateResult(
+  proteinservings,
+  fatservings,
+  carbservings,
+  veggieservings,
+  proteinperservingprotein,
+  proteinperservingcarbs,
+  proteinperservingfat,
+  proteinperservingveggies,
+  fatperservingprotein,
+  fatperservingcarbs,
+  fatperservingfat,
+  fatsperservingveggies,
+  carbsperservingprotein,
+  carbsperservingcarbs,
+  carbsperservingfat,
+  carbsperservingveggies,
+  kcalperservingprotein,
+  kcalperservingcarbs,
+  kcalperservingfat,
+  kcalperservingveggies 
+){
+  totalprotein =
+    proteinservings * proteinperservingprotein.value + carbservings * proteinperservingcarbs + fatservings * proteinperservingfat + veggieservings * proteinperservingveggies
+  totalcarbs =
+    proteinservings * carbsperservingprotein + carbservings * carbsperservingcarbs + fatservings * carbsperservingfat + veggieservings * carbsperservingveggies
+  totalfats = 
+    proteinservings * fatperservingprotein + carbservings * fatperservingcarbs + fatservings * fatperservingfat + veggieservings * fatsperservingveggies
+  totalcalories =  proteinservings * kcalperservingprotein + carbservings * kcalperservingcarbs + fatservings * kcalperservingfat + veggieservings * kcalperservingveggies
+  return {totalprotein, totalcarbs, totalfats, totalcalories}
+}
+
 
 function nextStep() {
   step.value++
@@ -201,7 +260,7 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
   }
 
   // Return values of x, y, z
-  return { x: Math.ceil(rhs[0]), y: Math.ceil(rhs[1]), z: Math.ceil(rhs[2]) }
+  return { protein: Math.ceil(rhs[0]), fat: Math.ceil(rhs[1]), carbs: Math.ceil(rhs[2]), veggies: Math.ceil(rhs[3]) }
 }
 </script>
 

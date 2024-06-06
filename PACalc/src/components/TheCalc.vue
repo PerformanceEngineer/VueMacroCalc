@@ -29,7 +29,7 @@ const highProt = computed(() => Math.round(weight.value * 2.2))
 const highFat = computed(() => (teehigh.value * 0.2) / 9.0)
 const highCarb = computed(() => (teehigh.value * 0.8 - highProt.value * 4.5) / 4.5)
 
-let remainingcals = teehigh.value
+//let remainingcals = teehigh.value
 
 const proteinperservingprotein = computed(() => (gender.value === 'male' ? 24.0 : 22.0))
 const kcalperservingprotein = 145
@@ -57,7 +57,7 @@ function calculateHandSizes() {
   let fatperservingfat = gender.value === 'male' ? 9.0 : 8.0
   // fatservings = highFat.value / fatperservingfat
   const kcalperservingfat = 90.0
-  remainingcals -= fatservings * kcalperservingfat
+  //remainingcals -= fatservings * kcalperservingfat
 
   let carbsperservingcarbs = gender.value === 'male' ? 25.0 : 22.0
   // carbservings = highCarb.value / carbsperservingcarbs

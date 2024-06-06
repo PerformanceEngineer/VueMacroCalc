@@ -45,6 +45,27 @@ const getFixedUrl = (req) => {
   return url.href
 }
 
+// const CACHE_NAME = 'my-cache-v1'; // Define your cache name here
+
+// self.addEventListener('install', (event) => {
+//   console.log("[Service Worker] Install")
+//   event.waitUntil(
+//     caches.open(CACHE_NAME)
+//       .then((cache) => {
+//         console.log("[Service Worker] Caching all: app shell and content")
+//         return cache.addAll([
+//           '/',
+//           '/index.html',
+//           '/styles.css',
+//           '/script.js',
+//           '/logo.png'
+//           // Add more files to cache here
+//         ]);
+//       })
+//   );
+// });
+
+
 /**
  *  @Lifecycle Activate
  *  New one activated when old isnt being used.

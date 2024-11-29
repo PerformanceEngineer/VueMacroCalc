@@ -45,6 +45,80 @@ let totalfats = 0
 let totalcarbs = 0
 let veggieservings = 0
 
+
+function calculateNew(){
+  // Example usage
+  const proteinTarget = 150;
+  const fatTarget = 40;
+
+  const proteinRich = {
+      protein: 24, // grams of protein per serving
+      fat: 3,      // grams of fat per serving
+      carbs: 6,    // grams of carbs per serving
+      kcal: 145
+  };
+
+  const fatRich = {
+      protein: 1,  // grams of protein per serving
+      fat: 9,      // grams of fat per serving
+      carbs: 0,    // grams of carbs per serving
+      kcal: 90
+  };
+
+  const carbRich = {
+      protein: 5,  // grams of protein per serving
+      fat: 1,      // grams of fat per serving
+      carbs: 19,   // grams of carbs per serving
+      kcal: 104
+  };
+
+  const veggies = {
+      protein: 1.8,  // grams of protein per serving
+      fat: 0,       // grams of fat per serving
+      carbs: 3.1,   // grams of carbs per serving
+      kcal: 33
+  };
+
+  try {
+      console.log('************');
+      const result = solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich);
+      result.fatRichServings = Math.ceil(result.fatRichServings);
+      result.proteinRichServings = Math.ceil(result.proteinRichServings);
+
+      console.log(`Protein-rich servings: ${result.proteinRichServings}`);
+      console.log(`Fat-rich servings: ${result.fatRichServings}`);
+      let kcalfp = result.proteinRichServings * proteinRich.kcal + result.fatRichServings * fatRich.kcal;
+      console.log(`Total calories from protein and fat: ${kcalfp}`);
+      veggieservings = 7.0;
+      let kcalveggies = veggieservings * veggies.kcal;
+      let kcalfpv = kcalfp + kcalveggies;
+      console.log(`Total calories from protein, fat, and veggies: ${kcalfpv}`);
+      let remainingcals = teehigh.value - kcalfpv;
+      console.log(`Remaining calories: ${remainingcals}`);
+      let carbservings = remainingcals / carbRich.kcal;
+      carbservings = Math.round(carbservings);
+      console.log(`Carb servings: ${carbservings}`);
+      let totalcalories = kcalfpv + carbservings * carbRich.kcal;
+      console.log(`Total calories: ${totalcalories}`);
+      console.log('************');
+
+      
+    proteinservings = Math.round(result.proteinRichServings);
+    carbservings = Math.round(result.carbRichServings);
+    fatservings = Math.round(result.fatRichServings);
+    veggieservings = 7.0;
+    let macros = calculateResult(proteinservings, fatservings, carbservings, veggieservings, proteinperservingprotein, proteinperservingcarbs, proteinperservingfat, proteinperservingveggies, fatperservingprotein, fatperservingcarbs, fatperservingfat, fatsperservingveggies, carbsperservingprotein, carbsperservingcarbs, carbsperservingfat, carbsperservingveggies, kcalperservingprotein, kcalperservingcarbs, kcalperservingfat, kcalperservingveggies)
+
+    console.log(macros.totalcalories);
+    
+
+  } catch (error) {
+      console.error(error.message);
+  }
+
+  
+}
+
 function calculateHandSizes() {
 
   console.info('Calculating hand sizes')
@@ -136,7 +210,7 @@ function calculateHandSizes() {
   // }
 
   proteinservings = result.protein
-  fatservings = result.fat
+  fatservings =  result.fat
   carbservings = result.carbs
   //veggieservings = result.veggies
 
@@ -199,7 +273,7 @@ function nextStep() {
   step.value++
   console.log('step:' + step.value.toString())
   if (step.value == 8) calculateTEE()
-  if (step.value == 10) calculateHandSizes()
+  if (step.value == 10) {calculateHandSizes(); calculateNew();}
 }
 
 function setGender(g) {
@@ -262,6 +336,46 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
   // Return values of x, y, z
   return { protein: Math.ceil(rhs[0]), fat: Math.ceil(rhs[1]), carbs: Math.ceil(rhs[2]), veggies: Math.ceil(rhs[3]) }
 }
+
+
+
+function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich) {
+    // Destructure the inputs for easier use
+    const { protein: proteinInProteinRich, fat: fatInProteinRich } = proteinRich;
+    const { protein: proteinInFatRich, fat: fatInFatRich } = fatRich;
+
+    // Coefficients for the equations
+    // Equation 1: proteinInProteinRich * x + proteinInFatRich * y = proteinTarget
+    // Equation 2: fatInProteinRich * x + fatInFatRich * y = fatTarget
+
+    const a1 = proteinInProteinRich;
+    const b1 = proteinInFatRich;
+    const c1 = proteinTarget;
+
+    const a2 = fatInProteinRich;
+    const b2 = fatInFatRich;
+    const c2 = fatTarget;
+
+    // Solve using substitution or elimination
+    // We calculate the determinant to ensure the system has a unique solution
+    const determinant = a1 * b2 - a2 * b1;
+
+    if (determinant === 0) {
+        throw new Error("The equation system has no unique solution.");
+    }
+
+    // Solve for x and y
+    const x = (c1 * b2 - c2 * b1) / determinant; // Number of servings of protein-rich food
+    const y = (a1 * c2 - a2 * c1) / determinant; // Number of servings of fat-rich food
+
+    // Return the result as an object
+    return {
+        proteinRichServings: x,
+        fatRichServings: y,
+    };
+}
+
+
 </script>
 
 <template>
@@ -289,7 +403,7 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
     </div>
 
     <div class="container pt-3 pb-3">
-      <h3 v-if="step === 7">
+      <h3 v-if="step === 6">
         Deine wöchentliche Trainingszeit schlägt sich wesentlich auf deinen Energiebedarf nieder.
         Wie viele Stunden pro Woche trainierst Du durchschnittlich?
       </h3>

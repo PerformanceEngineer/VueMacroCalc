@@ -547,20 +547,20 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
         <div class="row pt-4" style="background-color: white">
           <div class="col text-center">
             <img
-              src="https://cdn1.iconfinder.com/data/icons/fitness-55/300/protein--gym-fitness-sport-512.png"
+              src="/protein.png"
               style="width: 100%"
             /><br />
             Protein: {{ Math.round(lowProt) }} bis {{ highProt }} Gramm / Tag
           </div>
 
           <div class="col text-center">
-            <img src="https://img.icons8.com/ios/452/carbohydrates.png" style="width: 100%" /><br />
+            <img src="/carbs.png" style="width: 100%" /><br />
             Kohlenhydrate: {{ Math.round(lowCarb) }} bis {{ Math.round(highCarb) }} Gramm / Tag
           </div>
 
           <div class="col text-center">
             <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVv8gHhj3quy7jDCf_9tboeYiZYJqzpjMLoA&usqp=CAU"
+              src="/fats.png"
               style="width: 100%"
             /><br />
             Fette: {{ Math.round(lowFat) }} bis {{ Math.round(highFat) }} Gramm / Tag
@@ -653,7 +653,7 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
               <div class="col">
                 <img
                   id="responsive-image"
-                  src="https://thumbs.dreamstime.com/z/protein-icon-illustration-white-background-protein-icon-illustration-119365622.jpg"
+                  src="/protein.png"
                 />
               </div>
             </div>
@@ -665,7 +665,7 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
           <div class="col text center">
             <div class="row">
               <div class="col text-center">
-                <img id="responsive-image" :src="carbimage" />
+                <img id="responsive-image" src="/carbs.png" />
               </div>
             </div>
             <div class="row">
@@ -678,7 +678,7 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
               <div class="col text-center">
                 <img
                   id="responsive-image"
-                  src="https://www.pngitem.com/pimgs/m/163-1631365_trans-fat-no-trans-fat-icon-hd-png.png"
+                  src="/fats.png"
                 />
               </div>
             </div>

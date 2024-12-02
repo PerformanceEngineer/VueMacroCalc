@@ -1,12 +1,12 @@
 <script setup>
 import { ref, computed } from 'vue'
-import carbimage from '../assets/carbs.svg'
+//import carbimage from '../assets/carbs.svg'
 
 const step = ref(1)
 const name = ref('')
 const age = ref(null)
 const weight = ref(null)
-const gender = ref('')
+const gender = ref(null)
 //const bfatestimate = ref(null)
 const targetweight = ref(null)
 const traininghours = ref(null)
@@ -95,21 +95,35 @@ function calculateNew(){
       console.log(`Total calories from protein, fat, and veggies: ${kcalfpv}`);
       let remainingcals = teehigh.value - kcalfpv;
       console.log(`Remaining calories: ${remainingcals}`);
-      let carbservings = remainingcals / carbRich.kcal;
+      carbservings = remainingcals / carbRich.kcal;
       carbservings = Math.round(carbservings);
       console.log(`Carb servings: ${carbservings}`);
       let totalcalories = kcalfpv + carbservings * carbRich.kcal;
       console.log(`Total calories: ${totalcalories}`);
       console.log('************');
 
-      
-    proteinservings = Math.round(result.proteinRichServings);
-    carbservings = Math.round(result.carbRichServings);
-    fatservings = Math.round(result.fatRichServings);
-    veggieservings = 7.0;
-    let macros = calculateResult(proteinservings, fatservings, carbservings, veggieservings, proteinperservingprotein, proteinperservingcarbs, proteinperservingfat, proteinperservingveggies, fatperservingprotein, fatperservingcarbs, fatperservingfat, fatsperservingveggies, carbsperservingprotein, carbsperservingcarbs, carbsperservingfat, carbsperservingveggies, kcalperservingprotein, kcalperservingcarbs, kcalperservingfat, kcalperservingveggies)
+      let proteinperservingfat = 1.0
+      let proteinperservingcarbs = 5.0
+      let fatperservingprotein = 3.0
+      let fatperservingcarbs = 1.0
+      let carbsperservingprotein = 6.0
+      let carbsperservingfat = 0.0
+      let carbsperservingcarbs = 19.0
+      let fatperservingfat = 9.0
+      let proteinperservingveggies = 1.8
+      let carbsperservingveggies = 3.1
+      let fatsperservingveggies = 0.0
+      let kcalperservingveggies = 33.0
 
-    console.log(macros.totalcalories);
+      let kcalperservingcarbs = 104
+      const kcalperservingfat = 90.0
+
+      proteinservings = Math.round(result.proteinRichServings);
+      fatservings = Math.round(result.fatRichServings);
+      veggieservings = 7.0;
+      let macros = calculateResult(proteinservings, fatservings, carbservings, veggieservings, proteinperservingprotein, proteinperservingcarbs, proteinperservingfat, proteinperservingveggies, fatperservingprotein, fatperservingcarbs, fatperservingfat, fatsperservingveggies, carbsperservingprotein, carbsperservingcarbs, carbsperservingfat, carbsperservingveggies, kcalperservingprotein, kcalperservingcarbs, kcalperservingfat, kcalperservingveggies)
+
+      console.log(macros.totalcalories);
     
 
   } catch (error) {
@@ -119,7 +133,7 @@ function calculateNew(){
   
 }
 
-function calculateHandSizes() {
+/*function calculateHandSizes() {
 
   console.info('Calculating hand sizes')
   console.info('Protein: ' + protein.value)
@@ -234,7 +248,7 @@ function calculateHandSizes() {
   // totalcalories =  proteinservings * kcalperservingprotein + carbservings * kcalperservingcarbs + fatservings * kcalperservingfat + veggieservings * kcalperservingveggies
   // //totalprotein * 4 + totalcarbs * 4 + totalfats * 9.0
   
-}
+}*/
 
 function calculateResult(
   proteinservings,
@@ -273,7 +287,11 @@ function nextStep() {
   step.value++
   console.log('step:' + step.value.toString())
   if (step.value == 8) calculateTEE()
-  if (step.value == 10) {calculateHandSizes(); calculateNew();}
+  if (step.value == 10) 
+  {
+    //calculateHandSizes(); 
+    calculateNew();
+  }
 }
 
 function setGender(g) {
@@ -298,7 +316,7 @@ function calculateTEE() {
   teehigh.value = targetweight.value * (high.value + traininghours.value) * 2.2
 }
 
-function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
+/*function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
   // Coefficients of the system of equations
   let coefficients = [
     [pp, pf, pc],
@@ -336,7 +354,7 @@ function solveEquations(pp, pf, pc, fp, ff, fc, cp, cf, cc, PR, FR, TEE) {
   // Return values of x, y, z
   return { protein: Math.ceil(rhs[0]), fat: Math.ceil(rhs[1]), carbs: Math.ceil(rhs[2]), veggies: Math.ceil(rhs[3]) }
 }
-
+*/
 
 
 function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich) {
@@ -415,7 +433,8 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
         <input class="button" type="submit" value="OK" :disabled="!name" />
       </form>
 
-      <form v-if="step === 2" @submit.prevent="nextStep">
+      <div v-if="step > 1">
+      <form  v-if="step === 2" @submit.prevent="nextStep">
         <input
           class="hugeInput"
           type="number"
@@ -426,7 +445,12 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
         /><br />
         <input class="button" type="submit" value="OK" :disabled="!age" />
       </form>
+      <div v-if="step > 2" class="container">
+        <label>Alter: {{ age }}</label>
+        </div>
+    </div>
 
+    <div v-if="step > 2">
       <form v-if="step === 3" @submit.prevent="nextStep">
         <input
           class="hugeInput"
@@ -437,9 +461,13 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
         /><br />
         <input class="button" type="submit" value="OK" :disabled="!weight" />
       </form>
+      <div v-if="step > 3" class="container">
+        <label>Gewicht: {{ weight }}</label>
+        </div>
+    </div>
 
-      <div v-if="step === 4" class="container">
-        <div class="row">
+      <div v-if="step > 3" class="container">
+        <div class="row" v-if="gender===null">
           <div class="col text-center">
             <img
               src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/man.svg"
@@ -454,6 +482,14 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
             <button class="button" @click="setGender('female')">Frau</button>
           </div>
         </div>
+        <div v-else class="row">
+          <img v-if="gender==='male'"
+            src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/man.svg"
+            width="10%"/>
+          <img v-if="gender==='female'"
+              src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/woman.svg"
+              width="10%"/>
+        </div>
       </div>
 
       <!-- <form v-if="step === 5" @submit.prevent="nextStep">
@@ -466,6 +502,7 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
         <input class="button" type="submit" value="OK" :disabled="!bfatestimate" />
       </form> -->
 
+      <div v-if="step > 4">
       <form v-if="step === 5" @submit.prevent="nextStep">
         <input
           class="hugeInput"
@@ -476,19 +513,29 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
         /><br />
         <input class="button" type="submit" value="OK" :disabled="!targetweight" />
       </form>
+      <div v-if="step > 5" class="container">
+        <label>Zielgewicht: {{ targetweight }}</label>
+        </div>
+      </div>
 
-      <form v-if="step === 6" @submit.prevent="nextStep">
-        <input
-          class="hugeInput"
-          type="number"
-          v-model="traininghours"
-          placeholder="Durchschnittliche Trainingsstunden / Woche"
-        /><br />
-        <input class="button" type="submit" value="OK" :disabled="!traininghours" />
+      <div class="container" v-if="step > 5">
+        <div class="container" v-if="step === 6">
+        <form v-if="step === 6" @submit.prevent="nextStep">
+          <input
+            class="hugeInput"
+            type="number"
+            v-model="traininghours"
+            placeholder="Durchschnittliche Trainingsstunden / Woche"/><br />
+          <input v-if="step === 6" class="button" type="submit" value="OK" :disabled="!traininghours" />
       </form>
+      </div>
+      <div class="container" v-if="step > 6">
+        <label>Durchschnittliche Trainingsstunden / Woche: {{ traininghours }}</label>
+      </div>
+    </div>
 
-      <form v-if="step === 7" @submit.prevent="nextStep">
-        <div class="container">
+      <form v-if="step > 6" @submit.prevent="nextStep">
+        <div v-if="neat === null" class="container">
           <div class="row">
             <div class="col">
               <img
@@ -513,10 +560,21 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
             </div>
           </div>
         </div>
+        <div v-else class="container justify-content-center text-center">
+          <img v-if="neat===1"
+                src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/speedo1.svg"
+                style="width: 20%"/>
+          <img v-if="neat===2"
+                src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/speedo2.svg"
+                style="width: 20%"/>
+          <img v-if="neat===3"
+                src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/speedo3.svg"
+                style="width: 20%"/>
+        </div>
       </form>
 
       <!-- Summary -->
-      <div v-if="step === 8" class="container">
+      <div v-if="step > 7" class="container">
         <div class="row">
           <div class="col">Zielgewicht: {{ targetweight }}</div>
           <div class="col">Training: {{ traininghours }} Stunden / Woche</div>
@@ -543,7 +601,7 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
       </div>
 
       <!-- Macronutrient breakdown -->
-      <div v-if="step === 9" class="container">
+      <div v-if="step > 8" class="container">
         <div class="row pt-4" style="background-color: white">
           <div class="col text-center">
             <img
@@ -567,13 +625,13 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
           </div>
         </div>
         <br />
-        <form @submit.prevent="nextStep">
-          <input type="submit" class="button" value="Verstanden" />
+        <form v-if="step === 9" @submit.prevent="nextStep">
+          <input type="submit" class="button" value="Verstanden"  />
         </form>
       </div>
 
       <!-- Hand portion size breakdown -->
-      <div v-if="step === 10" class="container">
+      <div v-if="step > 9" class="container">
         <div class="row pt-4">
           <div class="col text-center">
             <div class="row">
@@ -618,7 +676,7 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
             <div class="row">
               <div class="col">
                 Gesunde Fette stützen Dein Immunsystem und helfen Dir, mit Entzündungen zurecht zu
-                kommen. : {{ fatservings }} daumengroße Portionen dürfen es schon sein.
+                kommen. {{ fatservings }} daumengroße Portionen dürfen es schon sein.
               </div>
             </div>
           </div>

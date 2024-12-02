@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:5173",
-            "webRoot": "${workspaceFolder}/PACalc",
+            "webRoot": "${workspaceFolder}/PACalc/src",
             "sourceMapPathOverrides": {
                 "webpack:///./src/*": "${webRoot}/*",
                 "webpack:///src/*": "${webRoot}/*"

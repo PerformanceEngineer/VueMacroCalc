@@ -90,6 +90,11 @@ centerdiv > * {
   justify-content: center;
 }
 
+div {
+  margin: 60px;
+  padding: 0;
+}
+
 /* .arrange-horizontally > * {
   display: inline-block;
   text-align: center;
@@ -130,6 +135,7 @@ h2 {
 body {
   background-color: #ffffff;
 }
+
 
 .button {
   background-color: #ec0015;

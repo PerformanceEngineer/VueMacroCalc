@@ -91,7 +91,7 @@ centerdiv > * {
 }
 
 div {
-  margin: 60px;
+  margin-top: 60px;
   padding: 0;
 }
 
@@ -170,7 +170,7 @@ body {
   height: auto;
 }
 .hugeInput {
-  font-size: 112px;
+  font-size: 25px;
   line-height: 136px;
   text-align: center;
   width: 100%;
@@ -186,4 +186,53 @@ label {
   border: 2px solid black;
   justify-content: center;
   text-align: center;
+}
+
+
+
+
+/* Container for the summary section */
+.summary-container {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Title for the summary section */
+.summary-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Individual summary item */
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Label for each summary item */
+.summary-label {
+  font-size: 1em;
+  color: #555;
+}
+
+/* Value for each summary item */
+.summary-value {
+  font-size: 1em;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Last summary item without border-bottom */
+.summary-item:last-child {
+  border-bottom: none;
 }

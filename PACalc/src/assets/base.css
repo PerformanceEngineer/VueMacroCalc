@@ -58,6 +58,11 @@
   font-weight: normal;
 }
 
+@font-face {
+  font-family: 'Inter';
+  src: url("/Inter-4.1/InterVariable.ttf") format("truetype");
+}
+
 body {
   min-height: 100vh;
   color: var(--color-text);
@@ -67,7 +72,7 @@ body {
     background-color 0.5s;
   line-height: 1.6;
   font-family:
-    Inter,
+    'Inter',
     -apple-system,
     BlinkMacSystemFont,
     'Segoe UI',
@@ -138,7 +143,7 @@ body {
 
 
 .button {
-  background-color: #ec0015;
+  background-color: black;
   border: solid;
   color: white;
   padding: 15px 32px;
@@ -146,13 +151,14 @@ body {
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  transition-duration: 0.4s;
+  transition-duration: 1s;
   width: 100%;
 }
 
 .button:hover {
   background-color: transparent;
-  color: #ec0015;
+  color: black;
+  background-color: white;
 }
 
 .MyLogoDiv {

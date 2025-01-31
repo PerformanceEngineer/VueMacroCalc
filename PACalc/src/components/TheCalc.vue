@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 //import carbimage from '../assets/carbs.svg'
 
-const step = ref(1)
+const step = ref(0)
 const name = ref('')
 const age = ref(null)
 const weight = ref(null)
@@ -231,58 +231,62 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
   <div class="container align-middle">
     <div class="text-center">
       <div class="MyLogoDiv">
-        <img id="responsive-image" src="/pa-logo.png" />
+        <img id="responsive-image" src="/PA-Schriftzug.svg" />
       </div>
     </div>
 
-    <div class="summary-container text-center pt-3 pb-3" v-if="step>1">
+    <div class="summary-container text-center pt-3 pb-3" v-if="step > 1">
       <div class="summary-title">Zusammenfassung</div>
-      
-      <div class="summary-item"  v-if="step > 1">
+
+      <div class="summary-item" v-if="step > 1">
         <span class="summary-label">Name:</span>
         <span class="summary-value">{{ name }}</span>
       </div>
 
-        <div v-if="step > 2" class="summary-item">
-          <span class="summary-label">Alter:</span>
-          <span class="summary-value">Alter: {{ age }}</span>
-        </div>
+      <div v-if="step > 2" class="summary-item">
+        <span class="summary-label">Alter:</span>
+        <span class="summary-value">Alter: {{ age }}</span>
+      </div>
 
-        <div v-if="step > 3" class="summary-item">
-          <span class="summary-label">Gewicht:</span>
-          <span class="summary-value">Gewicht: {{ weight }}</span>
-        </div>
+      <div v-if="step > 3" class="summary-item">
+        <span class="summary-label">Gewicht:</span>
+        <span class="summary-value">Gewicht: {{ weight }}</span>
+      </div>
 
-        <div v-if="gender != null" class="summary-item">
-          <span class="summary-label">Geschlecht:</span>
-          <span class="summary-value" v-if="gender === 'male'">Männlich</span>
-          <span class="summary-value" v-if="gender === 'female'">Weiblich</span>
-        </div>
+      <div v-if="gender != null" class="summary-item">
+        <span class="summary-label">Geschlecht:</span>
+        <span class="summary-value" v-if="gender === 'male'">Männlich</span>
+        <span class="summary-value" v-if="gender === 'female'">Weiblich</span>
+      </div>
 
-        <div v-if="step > 5" class="summary-item">
-          <span class="summary-label">Zielgewicht:</span>
-          <span class="summary-value">{{ targetweight }}</span>
-        </div>
+      <div v-if="step > 5" class="summary-item">
+        <span class="summary-label">Zielgewicht:</span>
+        <span class="summary-value">{{ targetweight }}</span>
+      </div>
 
-        <div class="summary-item" v-if="step > 6">
-          <span class="summary-label">Wöchentliche Trainingsstunden:</span>
-          <span class="summary-value">{{ traininghours }}</span>
-        </div>
+      <div class="summary-item" v-if="step > 6">
+        <span class="summary-label">Wöchentliche Trainingsstunden:</span>
+        <span class="summary-value">{{ traininghours }}</span>
+      </div>
 
-        <div v-if="neat != null" class="container justify-content-center text-center">
-          <img v-if="neat === 1"
-            src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/speedo1.svg"
-            style="width: 20%" />
-          <img v-if="neat === 2"
-            src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/speedo2.svg"
-            style="width: 20%" />
-          <img v-if="neat === 3"
-            src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/speedo3.svg"
-            style="width: 20%" />
-        </div>
+      <div v-if="neat != null" class="container justify-content-center text-center">
+        <span class="summary-label">Zielgewicht:</span>
+        <span class="summary-value">
+        <img v-if="neat === 1"
+          src="/PA-Activity-low.svg"
+          style="width: 20%" />
+        <img v-if="neat === 2"
+          src="/PA-Activity-med.svg"
+          style="width: 20%" />
+        <img v-if="neat === 3"
+          src="/PA-Activity-high.svg"
+          style="width: 20%" />
+        </span>
+      </div>
     </div>
 
     <div class="container text-center pt-3 pb-3">
+      <h2 v-if="step === 0">Herzlich Willkommen!</h2>
       <h2 v-if="step === 1">Wie heißt Du?</h2>
       <h2 v-if="step === 2">Wie alt bist Du?</h2>
       <h2 v-if="step === 3">Wie hoch ist Dein Gewicht (in kg)?</h2>
@@ -296,6 +300,13 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
     </div>
 
     <div class="container">
+      <div class="container" v-if="step === 0">
+        <p>Der Transformation Calculator unterstützt Dich dabei, Deine
+          Nahrungsaufnahme entsprechend Deiner Ziele zu optimieren.
+          Auf Basis Deiner Angaben wird Dein täglicher Kalorienbedarf
+          sowie die Verteilung der Makronährstoffe ermittelt.</p>
+        <p>Deine Eingaben werden nicht gespeichert.</p>
+      </div>
       <h3 v-if="step === 1">
         Keine Sorge, wir speichern keine Daten. Die Infomation wird nur für die Zusammenfassung verwendet.
       </h3>
@@ -312,6 +323,13 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
     </div>
 
     <div class="container">
+
+      <div v-if="step === 0">
+        <form v-if="step === 0" @submit.prevent="nextStep">
+          <input class="button" type="submit" value="Weiter" />
+        </form>
+      </div>
+
       <div v-if="step > 0">
         <form v-if="step === 1" @submit.prevent="nextStep">
           <input class="hugeInput" type="text" v-model="name" placeholder="Dein Name" /><br />
@@ -338,12 +356,12 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
       <div v-if="step > 3" class="container">
         <div class="row" v-if="gender === null">
           <div class="col text-center">
-            <img src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/man.svg" />
+            <img src="/PA-Male.svg" />
             <br />
             <button class="button" @click="setGender('male')">Mann</button>
           </div>
           <div class="col text-center">
-            <img src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/woman.svg" /><br />
+            <img src="/PA-Female.svg" /><br />
             <button class="button" @click="setGender('female')">Frau</button>
           </div>
         </div>
@@ -370,21 +388,18 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
       </div>
 
       <form v-if="step > 6" @submit.prevent="nextStep">
-        <div v-if="neat === null" class="container">
-          <div class="row">
+        <div v-if="neat === null" class="container text-center">
+          <div class="row justify-content-center">
             <div class="col-3">
-              <img src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/speedo1.svg"
-                style="width: 100%" /><br />
+              <img src="/PA-Activity-low.svg" style="width: 100%" /><br />
               <button class="button" @click="setNEAT(1)">Niedrig</button>
             </div>
             <div class="col-3">
-              <img src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/speedo2.svg"
-                style="width: 100%" /><br />
+              <img src="/PA-Activity-med.svg" style="width: 100%" /><br />
               <button class="button" @click="setNEAT(2)">Moderat</button>
             </div>
             <div class="col-3">
-              <img src="https://www.precisionnutrition.com/hand_portion_calculator/assets/images/speedo2.svg"
-                style="width: 100%" /><br />
+              <img src="/PA-Activity-high.svg" style="width: 100%" /><br />
               <button class="button" @click="setNEAT(3)">Hoch</button>
             </div>
           </div>
@@ -399,7 +414,7 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
           <div class="col">Training: {{ traininghours }} Stunden / Woche</div>-->
           <div class="col-12">
             <h3>
-            Kalorienbedarf: {{ Math.round(teelow) }} bis {{ Math.round(teehigh) }} / Tag
+              Kalorienbedarf: {{ Math.round(teelow) }} bis {{ Math.round(teehigh) }} / Tag
             </h3>
           </div>
         </div>
@@ -537,7 +552,7 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
       </div>
       <div v-if="step > 9" class="container">
         <h2>Beispielhafte Lebensmittel</h2>
-        <img src="/Sample-Macros.png" style="width:100%"/>
+        <img src="/Sample-Macros.png" style="width:100%" />
       </div>
     </div>
   </div>

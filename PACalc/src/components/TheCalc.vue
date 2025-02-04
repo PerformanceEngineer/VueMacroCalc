@@ -45,6 +45,9 @@ let totalfats = 0
 let totalcarbs = 0
 let veggieservings = 0
 
+function  convertToFloat() {
+      this.floatValue = parseFloat(this.rawValue) || 0.0;
+    }
 
 function calculateNew() {
   // Example usage
@@ -160,8 +163,8 @@ function calculateResult(
 function nextStep() {
   step.value++
   console.log('step:' + step.value.toString())
-  if (step.value == 8) calculateTEE()
-  if (step.value == 10) {
+  if (step.value == 6) calculateTEE()
+  if (step.value == 7) {
     calculateNew();
   }
 }
@@ -233,74 +236,29 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
       <div class="MyLogoDiv">
         <img id="responsive-image" src="/PA-Schriftzug.svg" />
       </div>
+      <p><b>_____</b></p>
     </div>
 
-    <div class="summary-container text-center pt-3 pb-3" v-if="step > 1">
-      <div class="summary-title">Zusammenfassung</div>
 
-      <div class="summary-item" v-if="step > 1">
-        <span class="summary-label">Name:</span>
-        <span class="summary-value">{{ name }}</span>
-      </div>
 
-      <div v-if="step > 2" class="summary-item">
-        <span class="summary-label">Alter:</span>
-        <span class="summary-value">Alter: {{ age }}</span>
-      </div>
-
-      <div v-if="step > 3" class="summary-item">
-        <span class="summary-label">Gewicht:</span>
-        <span class="summary-value">Gewicht: {{ weight }}</span>
-      </div>
-
-      <div v-if="gender != null" class="summary-item">
-        <span class="summary-label">Geschlecht:</span>
-        <span class="summary-value" v-if="gender === 'male'">Männlich</span>
-        <span class="summary-value" v-if="gender === 'female'">Weiblich</span>
-      </div>
-
-      <div v-if="step > 5" class="summary-item">
-        <span class="summary-label">Zielgewicht:</span>
-        <span class="summary-value">{{ targetweight }}</span>
-      </div>
-
-      <div class="summary-item" v-if="step > 6">
-        <span class="summary-label">Wöchentliche Trainingsstunden:</span>
-        <span class="summary-value">{{ traininghours }}</span>
-      </div>
-
-      <div v-if="neat != null" class="container justify-content-center text-center">
-        <span class="summary-label">Zielgewicht:</span>
-        <span class="summary-value">
-        <img v-if="neat === 1"
-          src="/PA-Activity-low.svg"
-          style="width: 20%" />
-        <img v-if="neat === 2"
-          src="/PA-Activity-med.svg"
-          style="width: 20%" />
-        <img v-if="neat === 3"
-          src="/PA-Activity-high.svg"
-          style="width: 20%" />
-        </span>
-      </div>
-    </div>
-
-    <div class="container text-center pt-3 pb-3">
-      <h2 v-if="step === 0">Herzlich Willkommen!</h2>
-      <h2 v-if="step === 1">Wie heißt Du?</h2>
-      <h2 v-if="step === 2">Wie alt bist Du?</h2>
-      <h2 v-if="step === 3">Wie hoch ist Dein Gewicht (in kg)?</h2>
-      <h2 v-if="step === 4">Was ist Dein Geschlecht?</h2>
+    <div class="container text-start pt-1">
+      <h3 v-if="step === 0">Herzlich Willkommen!</h3>
+      <h3 v-if="step === 1">1. Wie heißt Du?</h3>
+      <h3 v-if="step === 2">2. Wie alt bist Du?</h3>
+      <h3 v-if="step === 3">3. Wie viel wiegst Du?</h3>
+      <h3 v-if="step === 4">4. Was ist Dein Geschlecht?</h3>
       <!-- <h2 v-if="step === 5">Wie hoch ist Dein Körperfettanteil (in%)?</h2> -->
-      <h2 v-if="step === 5">Was ist Dein Zielgewicht (in kg)?</h2>
-      <h2 v-if="step === 6">In der Woche trainierst Du durchschnittlich...?</h2>
-      <h2 v-if="step === 7">Dein Aktivitätsniveau abseits vom Training ist...</h2>
-      <h2 v-if="step === 8">Dein Energiebedarf</h2>
-      <h2 v-if="step === 9">Deine Makronährstoffe</h2>
+      <h3 v-if="step === 5">5. Was ist Dein Zielgewicht?</h3>
+      <h3 v-if="step === 6">6. In der Woche trainierst Du durchschnittlich...?</h3>
+      <h3 v-if="step === 7">7. Dein Aktivitätsniveau abseits vom Training ist...</h3>
+      <h3 v-if="step === 8">8. Dein Ergebnis</h3>
+      <h3 v-if="step === 9">Deine Makronährstoffe</h3>
+
     </div>
+
 
     <div class="container">
-      <div class="container" v-if="step === 0">
+      <div class="container-fluid" v-if="step === 0">
         <p>Der Transformation Calculator unterstützt Dich dabei, Deine
           Nahrungsaufnahme entsprechend Deiner Ziele zu optimieren.
           Auf Basis Deiner Angaben wird Dein täglicher Kalorienbedarf
@@ -317,9 +275,11 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
         Diese Information hilft uns, venünftige Ziele für Deine Eiweiß- und Fettaufnahme vorzuschlagen.
       </h3>
       <h3 v-if="step === 6">
-        Deine wöchentliche Trainingszeit schlägt sich wesentlich auf deinen Energiebedarf nieder.
-        Wie viele Stunden pro Woche trainierst Du durchschnittlich?
+        Deine wöchentliche Trainingszeit schlägt sich wesentlich auf deinen Energiebedarf nieder und ist daher essentiell.
       </h3>
+      <h3 v-if="step === 7">
+        Dein Aktivitätsniveau abseits des Trainings beeinflusst Deinen täglichen Kalorienbedarf.
+        </h3>
     </div>
 
     <div class="container">
@@ -347,7 +307,7 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
 
       <div v-if="step > 2">
         <form v-if="step === 3" @submit.prevent="nextStep">
-          <input class="hugeInput" type="number" v-model="weight" placeholder="Gewicht" min="0" /><br />
+          <input class="hugeInput" type="number" v-model.number="weight" placeholder="Gewicht in kg" min="0.0" step="0.01" /><br />
           <input class="button" type="submit" value="OK" :disabled="!weight" />
         </form>
 
@@ -370,7 +330,7 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
 
       <div v-if="step > 4">
         <form v-if="step === 5" @submit.prevent="nextStep">
-          <input class="hugeInput" type="number" v-model="targetweight" placeholder="Zielgewicht" min="0" /><br />
+          <input class="hugeInput" type="number" v-model.number="targetweight" placeholder="Zielgewicht in kg" min="0" step="0.01" /><br />
           <input class="button" type="submit" value="OK" :disabled="!targetweight" />
         </form>
 
@@ -380,7 +340,7 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
         <div class="container" v-if="step === 6">
           <form v-if="step === 6" @submit.prevent="nextStep">
             <input class="hugeInput" type="number" v-model="traininghours"
-              placeholder="Durchschnittliche Trainingsstunden / Woche" /><br />
+              placeholder="Anzahl der Trainingsstunden / Woche" /><br />
             <input v-if="step === 6" class="button" type="submit" value="OK" :disabled="!traininghours" />
           </form>
         </div>
@@ -414,42 +374,56 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
           <div class="col">Training: {{ traininghours }} Stunden / Woche</div>-->
           <div class="col-12">
             <h3>
-              Kalorienbedarf: {{ Math.round(teelow) }} bis {{ Math.round(teehigh) }} / Tag
+              Täglicher Kalorienbedarf: <b>{{ Math.round(teelow) }} - {{ Math.round(teehigh) }} kcal </b>
             </h3>
           </div>
         </div>
-
+        </div>
+<!--
         <form v-if="step === 8" @submit.prevent="nextStep">
           <input class="button" type="submit" value="OK" :disabled="!traininghours" />
         </form>
       </div>
+    -->
 
       <!-- Macronutrient breakdown -->
-      <div v-if="step > 8" class="container">
+      
+      <div v-if="step > 7" class="container fs-4">
+
+        <div class="row">
+          <h3>Makroverteilung pro Tag:</h3>
+        </div>
         <div class="row" style="background-color: white">
           <div class="col-4 text-center">
             <img src="/PA-Protein.svg" style="width: 100%" /><br />
-            Protein: {{ Math.round(lowProt) }} bis {{ highProt }} Gramm / Tag
+            Protein:<br> <b>{{ Math.round(lowProt) }} - {{ highProt }}g</b>
           </div>
 
           <div class="col-4 text-center">
             <img src="/PA-Carbs.svg" style="width: 100%" /><br />
-            Kohlenhydrate: {{ Math.round(lowCarb) }} bis {{ Math.round(highCarb) }} Gramm / Tag
+            Kohlenhydrate:<br> <b>{{ Math.round(lowCarb) }} - {{ Math.round(highCarb) }}g</b>
           </div>
 
           <div class="col-4 text-center">
             <img src="/PA-Fat.svg" style="width: 100%" /><br />
-            Fette: {{ Math.round(lowFat) }} bis {{ Math.round(highFat) }} Gramm / Tag
+            Fette:<br> <b>{{ Math.round(lowFat) }} - {{ Math.round(highFat) }}g</b>
           </div>
         </div>
         <br />
+        <hr>
         <form v-if="step === 9" @submit.prevent="nextStep">
           <input type="submit" class="button" value="Verstanden" />
         </form>
       </div>
+    
 
       <!-- Hand portion size breakdown -->
-      <div v-if="step > 9" class="container">
+      <div v-if="step > 7" class="container fs-4">
+        <div class="row">
+          <b>
+          An diesen Portionsangaben kannst Du Dich orientieren,
+um im Schnitt {{totalcalories}} kcal / Tag zu Dir zu nehmen:</b>
+        </div>
         <div class="row pt-4">
           <div class="col text-center">
             <div class="row">
@@ -459,13 +433,12 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
             </div>
             <div class="row">
               <div class="col text-center">
-                Dein täglicher Eiweißbedarf liegt bei {{ proteinservings }} Handtellergroßen
-                Portionen.
+                 <b>{{ proteinservings }}</b><br> Handteller<br> Protein<br>pro Tag<br>=<br><b>{{ totalprotein }}g</b><br> Protein.
               </div>
             </div>
           </div>
 
-          <div class="col">
+          <div class="col text-center">
             <div class="row">
               <div class="col text-center">
                 <img src="/PA-Handvoll.svg" />
@@ -473,13 +446,12 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
             </div>
             <div class="row">
               <div class="col">
-                Kohlenhydrate befeuern Dein Training und Deine Denkleistung.
-                {{ carbservings }} handvoll (verzehrfertig) sind ein guter Startpunkt.
+                <b>{{ carbservings }}</b><br> handvoll Kohlenhydrate<br>pro Tag<br>=<br><b>{{ totalcarbs }}g</b><br> Kohlenhydrate.
               </div>
             </div>
           </div>
 
-          <div class="col">
+          <div class="col text-center">
             <div class="row">
               <div class="col">
                 <img src="/PA-Daumen.svg" />
@@ -487,13 +459,12 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
             </div>
             <div class="row">
               <div class="col">
-                Gesunde Fette stützen Dein Immunsystem und helfen Dir, mit Entzündungen zurecht zu
-                kommen. {{ fatservings }} daumengroße Portionen dürfen es schon sein.
+                <b>{{ fatservings }}</b><br>Daumen<br>gesunde Fette<br>pro Tag<br>=<br><b>{{ totalfats }}g</b><br>Fett.
               </div>
             </div>
           </div>
 
-          <div class="col">
+          <div class="col text-center">
             <div class="row">
               <div class="col">
                 <img src="/PA-Faust.svg" />
@@ -501,13 +472,12 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
             </div>
             <div class="row">
               <div class="col">
-                Eat the Rainbow! Runde Deine Ernährung ab mit zumindest {{ veggieservings }} faustgroßen
-                Portionen Gemüse. Hier gilt - mehr ist besser!
+                <b>{{ veggieservings }}</b><br>Gemüse<br>pro Tag<br>
               </div>
             </div>
           </div>
         </div>
-
+<!--
         <div class="row pt-4">
           <div class="col text-center">
             Bei diesen Portionsvorgaben nimmst Du im Schnitt {{ totalcalories }} Kalorien, und die
@@ -548,12 +518,69 @@ function solveNutritionalTargets(proteinTarget, fatTarget, proteinRich, fatRich)
               <div class="col text-center">{{ totalfats }} Gramm Fette</div>
             </div>
           </div>
+        </div>-->
+      </div>
+
+      <div class="summary-container text-center pt-3 pb-3" v-if="step > 10">
+        <div class="summary-title">Zusammenfassung</div>
+
+        <div class="summary-item" v-if="step > 1">
+          <span class="summary-label">Name:</span>
+          <span class="summary-value">{{ name }}</span>
+        </div>
+
+        <div v-if="step > 2" class="summary-item">
+          <span class="summary-label">Alter:</span>
+          <span class="summary-value">Alter: {{ age }}</span>
+        </div>
+
+        <div v-if="step > 3" class="summary-item">
+          <span class="summary-label">Gewicht:</span>
+          <span class="summary-value">Gewicht: {{ weight }}</span>
+        </div>
+
+        <div v-if="gender != null" class="summary-item">
+          <span class="summary-label">Geschlecht:</span>
+          <span class="summary-value" v-if="gender === 'male'">Männlich</span>
+          <span class="summary-value" v-if="gender === 'female'">Weiblich</span>
+        </div>
+
+        <div v-if="step > 5" class="summary-item">
+          <span class="summary-label">Zielgewicht:</span>
+          <span class="summary-value">{{ targetweight }}</span>
+        </div>
+
+        <div class="summary-item" v-if="step > 6">
+          <span class="summary-label">Wöchentliche Trainingsstunden:</span>
+          <span class="summary-value">{{ traininghours }}</span>
+        </div>
+
+        <div v-if="neat != null" class="container justify-content-center text-center">
+          <span class="summary-label">Aktivität:</span>
+          <span class="summary-value">
+            <img v-if="neat === 1" src="/PA-Activity-low.svg" style="width: 20%" />
+            <img v-if="neat === 2" src="/PA-Activity-med.svg" style="width: 20%" />
+            <img v-if="neat === 3" src="/PA-Activity-high.svg" style="width: 20%" />
+          </span>
         </div>
       </div>
-      <div v-if="step > 9" class="container">
-        <h2>Beispielhafte Lebensmittel</h2>
-        <img src="/Sample-Macros.png" style="width:100%" />
-      </div>
+
     </div>
   </div>
+  <div class="container text-center fs-2">
+    <p> Nähere Informationen zu Ernährung und Training
+      findest Du im <b>Transformation Handbook</b>.</p>
+    <hr>
+  </div>
+  <div class="row">
+      <div class="footer text-center justify-content-center">
+        <p><b>Datenschutz</b></p>
+        <p>Alle von dir angegebenen Informationen dienen ausschließlich der Berechnung der für Dich empfohlenen
+          Nährstoffverteilung. Diese wird Dir am Ende in der Zusammenfassung angezeigt.
+          Deine Eingaben werden nicht gespeichert.
+          Der Transformation Calculator ist Teil des <b>Transformation Handbooks</b>.</p>
+        <p>© 2025 Lukas Pezenka & Marc-André Yu</p>
+        <p>All rights reserved.</p>
+      </div>
+    </div>
 </template>

@@ -194,7 +194,10 @@ label {
   text-align: center;
 }
 
-
+hr.short {
+  border-top: 4px solid black;
+  width:10%;
+}
 
 
 /* Container for the summary section */
@@ -220,8 +223,8 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-  padding: 10px;
+  margin-bottom: 3px;
+  padding: 1px;
   border-bottom: 1px solid #eee;
 }
 
